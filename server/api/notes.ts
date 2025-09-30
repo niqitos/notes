@@ -1,5 +1,6 @@
-// /api/notes return all the notes
 import jwt from 'jsonwebtoken'
+import prisma from '@@/server/utils/prisma'
+
 export default defineEventHandler(async (event) => {
   try {
     const cookies = parseCookies(event)

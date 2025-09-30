@@ -1,23 +1,7 @@
-// /api/user POST
-
-// Hashing passwords
-// - Prevents PW from being stored in plaintext
-// - mypassword123 jnjvsadcjncuwinuiwebjksab,/#@$fasDFVCASDR$@#
-
-// Salts
-// - salt = string of random characters
-// - Typically added to the beginning of a user's PW
-//    - mypassword123 becomes x#fSA#Amypassword123
-// - Used to prevent hackers from using precomputed hash tables to crack a PW
-// - Each user gets their own salt so even if two users have the same PW
-//   their password's look completely different
-
-// Generate secret:
-// - node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-
 import bcrypt from 'bcryptjs'
 import validator from 'validator'
 import jwt from 'jsonwebtoken'
+import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -75,9 +59,3 @@ export default defineEventHandler(async (event) => {
     throw error
   }
 })
-
-// GET
-// POST
-// PATCH
-// PUT
-// DELETE

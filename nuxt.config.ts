@@ -20,20 +20,61 @@ export default defineNuxtConfig({
     }
   },
 
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: '2025-08-01',
   devtools: { enabled: true },
 
-  css: ['@/assets/main.css'],
+  css: [
+    '@/assets/css/main.css'
+  ],
 
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {}
-    }
+  i18n: {
+    locales: [
+      {
+        name: 'Українська',
+        code: 'uk',
+        language: 'uk',
+        file: 'uk.js',
+        isCatchallLocale: true
+      },
+      {
+        name: 'Русский',
+        code: 'ru',
+        language: 'ru',
+        file: 'ru.js'
+      },
+      {
+        name: 'English',
+        code: 'en',
+        language: 'en',
+        file: 'en.js'
+      }
+    ],
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
+    defaultLocale: process.env.DEFAULT_LOCALE as 'uk' | 'ru' | 'en' | undefined,
+    detectBrowserLanguage: false
   },
 
   modules: [
+    '@nuxt/eslint',
+    '@nuxt/image',
+    '@nuxt/ui',
+    '@nuxtjs/i18n',
     '@prisma/nuxt',
     '@vueuse/nuxt'
-  ]
+  ],
+
+
+  icon: {
+    clientBundle: {
+      icons: [
+        'lucide:arrow-right',
+        'lucide:circle-check',
+        'lucide:log-out',
+        'lucide:pencil',
+        'lucide:panel-right-close',
+        'lucide:panel-right-open',
+        'lucide:trash'
+      ]
+    }
+  }
 })
