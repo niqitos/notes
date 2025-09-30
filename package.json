@@ -23,6 +23,7 @@
     "validator": "^13.15.15"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.68",
     "@prisma/client": "^6.16.2",
     "prisma": "^5.22.0"
   }
