@@ -25,6 +25,7 @@
       :editor="editor"
       :tippy-options="{ duration: 100 }"
       :should-show="shouldShow"
+      class="z-100"
     >
       <div class="flex bg-muted rounded-md shadow-md">
         <UButton
