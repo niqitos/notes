@@ -25,7 +25,7 @@
       <div class="flex-grow">
         <p
           class="text-xs font-bold text-muted mt-12 mb-4"
-          v-text="'Today'"
+          v-text="$t('today')"
         />
 
         <div class="ml-2 space-y-2">
@@ -63,7 +63,7 @@
       <div>
         <p
           class="text-xs font-bold text-muted mt-12 mb-4"
-          v-text="'Yesterday'"
+          v-text="$t('yesterday')"
         />
 
         <div class="ml-2 space-y-2">
@@ -101,7 +101,7 @@
       <div>
         <p
           class="text-xs font-bold text-muted mt-12 mb-4"
-          v-text="'Earlier'"
+          v-text="$t('earlier')"
         />
 
         <div class="ml-2 space-y-2">
@@ -155,7 +155,7 @@
 
           <UButton
             icon="i-lucide:pencil"
-            label="Create Note"
+            :label="$t('create')"
             color="neutral"
             variant="link"
             :ui="{
@@ -167,15 +167,15 @@
 
         <UModal
           v-model:open="deleteModalOpen"
-          title="Are you sure?"
-          description="This will delete your note permanently, are you extra sure you like to do this?"
+          :title="$t('delete.title')"
+          :description="$t('delete.description')"
           :ui="{
             footer: 'justify-end space-x-2'
           }"
         >
           <UButton
             icon="i-lucide:trash"
-            title="Delete"
+            :title="$t('delete.trigger')"
             color="neutral"
             variant="link"
             :ui="{
@@ -186,14 +186,14 @@
           <template #footer>
             <UButton
               color="neutral"
-              label="Cancel"
+              :label="$t('delete.cancel')"
               @click="deleteModalOpen = false"
             />
 
             <UButton
               color="error"
               icon="i-lucide:trash"
-              label="Yes, delete"
+              :label="$t('delete.confirm')"
               @click="deleteNote"
             />
           </template>
@@ -221,15 +221,15 @@
 
       <UModal
         v-model:open="logoutModalOpen"
-        title="Are you sure?"
-        description="You will be logged out."
+        :title="$t('logout.title')"
+        :description="$t('logout.description')"
         :ui="{
           footer: 'justify-end space-x-2'
         }"
       >
         <UButton
           icon="i-lucide:log-out"
-          title="Logout"
+          :title="$t('logout.trigger')"
           color="neutral"
           variant="link"
           :ui="{
@@ -241,14 +241,14 @@
         <template #footer>
           <UButton
             color="neutral"
-            label="Cancel"
+            :label="$t('logout.cancel')"
             @click="logoutModalOpen = false"
           />
 
           <UButton
             color="error"
             icon="i-lucide:log-out"
-            label="Logout"
+            :label="$t('logout.confirm')"
             @click="logout"
           />
         </template>

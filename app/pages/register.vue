@@ -1,11 +1,11 @@
 <template>
-  <div class="flex bg-default md:bg-elevated h-dvh">
+  <div class="flex h-dvh w-full bg-[url('https://images.unsplash.com/photo-1634307449380-3137f7902d30')] bg-cover bg-center">
     <div class="bg-default w-[516px] mx-auto md:mx-0 p-4 sm:p-12 flex flex-col justify-center">
       <Logo class="mb-6" />
 
       <UAuthForm
         :schema="schema"
-        title="Sign up for a free account"
+        :title="$t('register.title')"
         :fields="fields"
         :ui="{
           header: 'text-left',
@@ -14,17 +14,17 @@
         @submit="submit"
       >
         <template #description>
-          Already registered?
+          {{ $t('register.already') }}
 
-          <NuxtLink to="/login" class="font-bold text-primary-500 underline">Log in</NuxtLink>
+          <NuxtLink to="/login" class="font-bold text-primary-500 underline">{{ $t('register.login.button') }}</NuxtLink>
 
-          to your account
+          {{ $t('register.login.text') }}
         </template>
 
         <template #submit>
           <UButton
             trailing-icon="i-lucide:arrow-right"
-            label="Sign Up"
+            :label="$t('register.submit')"
             type="submit"
             :loading="loading"
             size="xl"
@@ -44,29 +44,30 @@ import * as z from 'zod'
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
 const toast = useToast()
+const { t } = useI18n()
 
 const fields: AuthFormField[] = [
   {
     name: 'email',
     type: 'email',
-    label: 'Email',
-    placeholder: 'Enter your email',
+    label: t('fields.email.label'),
+    placeholder: t('fields.email.placeholder'),
     size: 'xl',
     required: true
   },
   {
     name: 'password',
-    label: 'Password',
     type: 'password',
-    placeholder: 'Enter your password',
+    label: t('fields.password.label'),
+    placeholder: t('fields.password.placeholder'),
     size: 'xl',
     required: true
   }
 ]
 
 const schema = z.object({
-  email: z.email('Invalid email'),
-  password: z.string('Password is required').min(8, 'Must be at least 8 characters')
+  email: z.email(t('fields.email.invalid')),
+  password: z.string(t('fields.email.required')).min(8, t('fields.email.min'))
 })
 
 type Schema = z.output<typeof schema>
@@ -84,8 +85,8 @@ const submit = async (payload: FormSubmitEvent<Schema>) => {
     })
 
     toast.add({
-      title: 'Success!',
-      description: 'Account created successfully.',
+      title: t('register.success.title'),
+      description: t('register.success.description'),
       icon: 'i-lucide:circle-check',
       color: 'success',
       duration: 3000
@@ -94,7 +95,7 @@ const submit = async (payload: FormSubmitEvent<Schema>) => {
     navigateTo('/')
   } catch (error: any) {
     toast.add({
-      title: 'Error!',
+      title: t('register.error.title'),
       description: error.response?._data?.message,
       icon: 'i-lucide:circle-check',
       color: 'error',
