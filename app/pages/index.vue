@@ -3,7 +3,7 @@
     <div
       ref="drawerRef"
       :class="[
-        'p-4 flex-col overflow-scroll h-dvh absolute md:relative transition-all bg-default z-10 shadow-md md:shadow-sm',
+        'p-4 flex-col overflow-scroll h-dvh absolute md:relative transition-all bg-default z-10 shadow-md md:shadow-sm dark:shadow-gray-500',
         drawerOpen ? 'block md:flex w-full md:w-[338px]' : 'hidden w-0'
       ]"
     >
@@ -41,7 +41,7 @@
           >
             <h3
               class="text-sm font-bold truncate"
-              v-text="note.text.substring(0, 50)"
+              v-text="getPreview(note.text).substring(0, 50)"
             />
 
             <div class="leading-none truncate">
@@ -51,9 +51,9 @@
               />
 
               <span
-                v-if="note.text.length > 50" c
+                v-if="getPreview(note.text).length > 50" c
                 lass="text-xs"
-                v-text="`... ${note.text.substring(50, 100)}`"
+                v-text="`... ${getPreview(note.text).substring(50, 100)}`"
               />
             </div>
           </div>
@@ -79,7 +79,7 @@
           >
             <h3
               class="text-sm font-bold truncate"
-              v-text="note.text.substring(0, 50)"
+              v-text="getPreview(note.text).substring(0, 50)"
             />
 
             <div class="leading-none truncate">
@@ -89,9 +89,9 @@
               />
 
               <span
-                v-if="note.text.length > 50"
+                v-if="getPreview(note.text).length > 50"
                 class="text-xs"
-                v-text="`... ${note.text.substring(50, 100)}`"
+                v-text="`... ${getPreview(note.text).substring(50, 100)}`"
               />
             </div>
           </div>
@@ -117,7 +117,7 @@
           >
             <h3
               class="text-sm font-bold truncate"
-              v-text="note.text.substring(0, 50)"
+              v-text="getPreview(note.text).substring(0, 50)"
             />
 
             <div class="leading-none truncate">
@@ -127,8 +127,8 @@
               />
 
               <span
-                v-if="note.text.length > 50" class="text-xs"
-                v-text="`... ${note.text.substring(50, 100)}`"
+                v-if="getPreview(note.text).length > 50" class="text-xs"
+                v-text="`... ${getPreview(note.text).substring(50, 100)}`"
               />
             </div>
           </div>
@@ -200,7 +200,7 @@
         </UModal>
       </div>
 
-      <div class="max-w-[437px] mx-auto w-full flex-grow flex flex-col p-4">
+      <!-- <div class="max-w-[437px] mx-auto w-full flex-grow flex flex-col p-4">
         <p
           class="text-muted font-playfair"
           v-text="formatDateTime(selectedNote.updatedAt)"
@@ -217,7 +217,18 @@
             selectedNote.text = updatedNote
           }"
         />
-      </div>
+      </div> -->
+
+      <ClientOnly>
+        <TiptapEditor
+          :content="updatedNote"
+          :label="formatDateTime(selectedNote.updatedAt)"
+          @change="($event: any) => {
+            debouncedFn($event)
+            selectedNote.text = $event
+          }"
+        />
+      </ClientOnly>
 
       <UModal
         v-model:open="logoutModalOpen"
@@ -265,7 +276,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const updatedNote = ref<any>('')
 const notes = ref<any>([])
 const selectedNote = ref<any>({})
-const textarea = ref<any>(null)
+// const textarea = ref<any>(null)
 const drawerOpen = ref<boolean>(breakpoints.greater('md').value)
 const drawerRef = useTemplateRef<HTMLElement>('drawerRef')
 const deleteModalOpen = ref<boolean>(false)
@@ -313,22 +324,22 @@ const createNewNote = async () => {
     notes.value.unshift(newNote)
     selectedNote.value = notes.value[0]
     updatedNote.value = ''
-    textarea.value.focus()
+    // textarea.value.focus()
   } catch (err) {
     console.log(err)
   }
 }
 
-const debouncedFn = useDebounceFn(async () => {
-  await updateNote()
+const debouncedFn = useDebounceFn(async (text: any) => {
+  await updateNote(text)
 }, 1000)
 
-const updateNote = async () => {
+const updateNote = async (text: any) => {
   try {
     await $fetch(`/api/notes/${selectedNote.value.id}`, {
       method: 'PATCH',
       body: {
-        updatedNote: updatedNote.value
+        updatedNote: text
       }
     })
   } catch (err) {
@@ -375,6 +386,24 @@ const earlierNotes = computed(() => {
   })
 })
 
+const getPreview: any = (html: string, maxLength: number = 50) => {
+  if (!html) return ''
+
+  // Create a temporary DOM parser
+  const div = document.createElement('div')
+  div.innerHTML = html.trim()
+
+  // Get the first element node (like <p>, <h1>, etc.)
+  const firstEl = div.firstElementChild
+  if (!firstEl) return ''
+
+  // Extract only the text content
+  const text = firstEl.textContent?.trim() || ''
+
+  // Truncate to maxLength and add ellipsis if needed
+  return text.length > maxLength ? text.slice(0, maxLength) + '…' : text
+}
+
 onMounted(async () => {
   notes.value = await $fetch('/api/notes')
   notes.value.sort((a: any, b: any) => new Date(b.updatedAt) > new Date(a.updatedAt))
@@ -388,6 +417,6 @@ onMounted(async () => {
 
   updatedNote.value = selectedNote.value.text
 
-  textarea.value.focus()
+  // textarea.value.focus()
 })
 </script>

@@ -76,6 +76,10 @@ export default defineNuxtConfig({
     '@vueuse/nuxt'
   ],
 
+  ui: {
+    mdc: true
+  },
+
   icon: {
     clientBundle: {
       icons: [
