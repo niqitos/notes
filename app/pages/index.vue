@@ -31,10 +31,11 @@
         <div class="ml-2 space-y-2">
           <div
             v-for="note in todaysNotes"
+            :key="note.id"
             class="p-2 rounded-lg cursor-pointer"
             :class="{
-              'bg-primary-500 text-inverted': note.id === selectedNote.id,
-              'text-default hover:bg-primary-500/50 hover:text-inverted': note.id !== selectedNote.id,
+              'bg-primary-500 text-black': note.id === selectedNote.id,
+              'text-default hover:bg-primary-500/50 hover:text-black': note.id !== selectedNote.id,
             }"
             @click="setNote(note)"
           >
@@ -68,27 +69,28 @@
         <div class="ml-2 space-y-2">
           <div
             v-for="note in yesterdaysNotes"
+            :key="note.id"
             class="p-2 rounded-lg cursor-pointer"
             :class="{
-              'bg-primary-500 text-inverted': note.id === selectedNote.id,
-              'text-default hover:bg-primary-500/50 hover:text-inverted': note.id !== selectedNote.id,
+              'bg-primary-500 text-black': note.id === selectedNote.id,
+              'text-default hover:bg-primary-500/50 hover:text-black': note.id !== selectedNote.id,
             }"
             @click="setNote(note)"
           >
             <h3
-              class="text-sm font-bold text-inverted truncate"
+              class="text-sm font-bold truncate"
               v-text="note.text.substring(0, 50)"
             />
 
-            <div class="leading-none truncate text-inverted">
+            <div class="leading-none truncate">
               <span
-                class="text-xs text-inverted mr-4"
+                class="text-xs mr-4"
                 v-text="formatDateTime(note.updatedAt)"
               />
 
               <span
                 v-if="note.text.length > 50"
-                class="text-xs text-inverted"
+                class="text-xs"
                 v-text="`... ${note.text.substring(50, 100)}`"
               />
             </div>
@@ -105,26 +107,27 @@
         <div class="ml-2 space-y-2">
           <div
             v-for="note in earlierNotes"
+            :key="note.id"
             class="p-2 rounded-lg cursor-pointer"
             :class="{
-              'bg-primary-500 text-inverted': note.id === selectedNote.id,
-              'text-default hover:bg-primary-500/50 hover:text-inverted': note.id !== selectedNote.id,
+              'bg-primary-500 text-black': note.id === selectedNote.id,
+              'text-default hover:bg-primary-500/50 hover:text-black': note.id !== selectedNote.id,
             }"
             @click="setNote(note)"
           >
             <h3
-              class="text-sm font-bold text-inverted truncate"
+              class="text-sm font-bold truncate"
               v-text="note.text.substring(0, 50)"
             />
 
-            <div class="leading-none truncate text-inverted">
+            <div class="leading-none truncate">
               <span
-                class="text-xs text-inverted mr-4"
+                class="text-xs mr-4"
                 v-text="formatDateTime(note.updatedAt)"
               />
 
               <span
-                v-if="note.text.length > 50" class="text-xs text-inverted"
+                v-if="note.text.length > 50" class="text-xs"
                 v-text="`... ${note.text.substring(50, 100)}`"
               />
             </div>
@@ -204,10 +207,10 @@
         />
 
         <textarea
+          id="note"
           ref="textarea"
           v-model="updatedNote"
           name="note"
-          id="note"
           class="text-default my-4 font-playfair w-full bg-transparent transition focus:outline-none resize-none flex-grow"
           @input="() => {
             debouncedFn()
@@ -272,7 +275,7 @@ definePageMeta({
   middleware: ['auth']
 })
 
-onClickOutside(drawerRef, event => {
+onClickOutside(drawerRef, () => {
   if (breakpoints.smaller('md').value) {
     drawerOpen.value = false
   }

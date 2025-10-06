@@ -59,10 +59,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxtjs/i18n',
-    '@prisma/nuxt',
     '@vueuse/nuxt'
   ],
-
 
   icon: {
     clientBundle: {

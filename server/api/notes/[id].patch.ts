@@ -38,17 +38,14 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    console.log(id)
-
     await prisma.note.update({
       where: {
         id: Number(id),
       },
       data: {
         text: body.updatedNote,
-      },
+      }
     })
-    console.log(body)
   } catch (err) {
     console.log(err)
   }
