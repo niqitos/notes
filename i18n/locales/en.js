@@ -4,13 +4,13 @@ export default {
     email: {
       label: 'Email',
       placeholder: 'Enter your email',
-      invalid: 'Invalid email',
-      required: 'Password is required',
-      min: 'Must be at least 8 characters'
+      invalid: 'Invalid email'
     },
     password: {
       label: 'Password',
-      placeholder: 'Enter your password'
+      placeholder: 'Enter your password',
+      required: 'Password is required',
+      min: 'Must be at least 8 characters'
     }
   },
   register: {

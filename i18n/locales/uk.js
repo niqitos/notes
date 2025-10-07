@@ -4,13 +4,13 @@ export default {
     email: {
       label: 'Ел. пошта',
       placeholder: 'Введіть email',
-      invalid: 'Недійсна електронна адреса',
-      required: 'Пароль обов’язкове поле',
-      min: 'Має бути щонайменше 8 символів'
+      invalid: 'Недійсна електронна адреса'
     },
     password: {
       label: 'Пароль',
-      placeholder: 'Введіть пароль'
+      placeholder: 'Введіть пароль',
+      required: 'Пароль обов’язкове поле',
+      min: 'Має бути щонайменше 8 символів'
     }
   },
   register: {

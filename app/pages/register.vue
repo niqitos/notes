@@ -67,7 +67,7 @@ const fields: AuthFormField[] = [
 
 const schema = z.object({
   email: z.email(t('fields.email.invalid')),
-  password: z.string(t('fields.email.required')).min(8, t('fields.email.min'))
+  password: z.string(t('fields.password.required')).min(8, t('fields.password.min'))
 })
 
 type Schema = z.output<typeof schema>
