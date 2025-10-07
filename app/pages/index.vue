@@ -28,7 +28,7 @@
           v-text="$t('today')"
         />
 
-        <div class="ml-2 space-y-2">
+        <div class="space-y-2">
           <div
             v-for="note in todaysNotes"
             :key="note.id"
@@ -66,7 +66,7 @@
           v-text="$t('yesterday')"
         />
 
-        <div class="ml-2 space-y-2">
+        <div class="space-y-2">
           <div
             v-for="note in yesterdaysNotes"
             :key="note.id"
@@ -104,7 +104,7 @@
           v-text="$t('earlier')"
         />
 
-        <div class="ml-2 space-y-2">
+        <div class="space-y-2">
           <div
             v-for="note in earlierNotes"
             :key="note.id"
