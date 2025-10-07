@@ -3,7 +3,7 @@
     <div
       ref="drawerRef"
       :class="[
-        'p-4 flex-col overflow-scroll max-h-dhv h-dvh absolute md:relative transition-all bg-default z-10 shadow-md md:shadow-sm dark:shadow-gray-500',
+        'p-4 flex-col overflow-scroll max-h-dhv h-dvh absolute md:relative transition-all bg-default z-100 shadow-md md:shadow-sm dark:shadow-gray-500',
         drawerOpen ? 'block md:flex w-full md:w-[338px]' : 'hidden w-0'
       ]"
     >
@@ -200,17 +200,18 @@
         </UModal>
       </div>
 
-      <ClientOnly>
-        <TiptapEditor
-          :content="updatedNote"
-          :label="formatDateTime(selectedNote.updatedAt)"
-          class="max-h-dhv h-dvh overflow-auto pt-16"
-          @change="($event: any) => {
-            debouncedFn($event)
-            selectedNote.text = $event
-          }"
-        />
-      </ClientOnly>
+      <div class="pt-16 overflow-auto">
+        <ClientOnly>
+          <TiptapEditor
+            :content="updatedNote"
+            :label="formatDateTime(selectedNote.updatedAt)"
+            @change="($event: any) => {
+              debouncedFn($event)
+              selectedNote.text = $event
+            }"
+          />
+        </ClientOnly>
+      </div>
 
       <UModal
         v-model:open="logoutModalOpen"
