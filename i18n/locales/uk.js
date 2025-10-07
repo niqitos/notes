@@ -26,7 +26,7 @@ export default {
       description: 'Акаунт успішно створено.'
     },
     error: {
-      title: 'Error!'
+      title: 'Помилка!'
     }
   },
   login: {
@@ -42,7 +42,7 @@ export default {
       description: 'Успішно авторизовано.'
     },
     error: {
-      title: 'Error!'
+      title: 'Помилка!'
     }
   },
   today: 'Сьогодні',

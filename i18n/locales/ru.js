@@ -26,7 +26,7 @@ export default {
       description: 'Аккаунт успешно создан.'
     },
     error: {
-      title: 'Error!'
+      title: 'Ошибка!'
     }
   },
   login: {
@@ -42,7 +42,7 @@ export default {
       description: 'Авторизация выполнена успешно.'
     },
     error: {
-      title: 'Error!'
+      title: 'Ошибка!'
     }
   },
   today: 'Сегодня',
