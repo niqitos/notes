@@ -1,9 +1,9 @@
 <template>
-  <div class="flex h-dvh">
+  <div class="flex max-h-dhv h-dvh overflow-clip">
     <div
       ref="drawerRef"
       :class="[
-        'p-4 flex-col overflow-scroll h-dvh absolute md:relative transition-all bg-default z-10 shadow-md md:shadow-sm dark:shadow-gray-500',
+        'p-4 flex-col overflow-scroll max-h-dhv h-dvh absolute md:relative transition-all bg-default z-10 shadow-md md:shadow-sm dark:shadow-gray-500',
         drawerOpen ? 'block md:flex w-full md:w-[338px]' : 'hidden w-0'
       ]"
     >
@@ -136,8 +136,8 @@
       </div>
     </div>
 
-    <div class="w-full flex flex-col">
-      <div class="flex justify-between w-full items-start py-4 px-2.5">
+    <div class="w-full flex flex-col max-h-dhv h-dvh relative">
+      <div class="flex justify-between w-full items-start py-4 px-2.5 absolute bg-default/75 backdrop-blur z-10">
         <div class="space-x-2">
           <UButton
             :icon="drawerOpen ? 'i-lucide:panel-right-open' : 'i-lucide:panel-right-close'"
@@ -150,7 +150,7 @@
                 drawerOpen ? ' md:hidden inline-flex' : ''
               ]
             }"
-            @click="drawerOpen = !drawerOpen"
+            @click.stop="drawerOpen = !drawerOpen"
           />
 
           <UButton
@@ -200,29 +200,11 @@
         </UModal>
       </div>
 
-      <!-- <div class="max-w-[437px] mx-auto w-full flex-grow flex flex-col p-4">
-        <p
-          class="text-muted font-playfair"
-          v-text="formatDateTime(selectedNote.updatedAt)"
-        />
-
-        <textarea
-          id="note"
-          ref="textarea"
-          v-model="updatedNote"
-          name="note"
-          class="text-default my-4 font-playfair w-full bg-transparent transition focus:outline-none resize-none flex-grow"
-          @input="() => {
-            debouncedFn()
-            selectedNote.text = updatedNote
-          }"
-        />
-      </div> -->
-
       <ClientOnly>
         <TiptapEditor
           :content="updatedNote"
           :label="formatDateTime(selectedNote.updatedAt)"
+          class="max-h-dhv h-dvh overflow-auto pt-16"
           @change="($event: any) => {
             debouncedFn($event)
             selectedNote.text = $event
@@ -276,8 +258,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const updatedNote = ref<any>('')
 const notes = ref<any>([])
 const selectedNote = ref<any>({})
-// const textarea = ref<any>(null)
-const drawerOpen = ref<boolean>(breakpoints.greater('md').value)
+const drawerOpen = ref<boolean>(breakpoints.isGreater('md'))
 const drawerRef = useTemplateRef<HTMLElement>('drawerRef')
 const deleteModalOpen = ref<boolean>(false)
 const logoutModalOpen = ref<boolean>(false)
@@ -287,7 +268,7 @@ definePageMeta({
 })
 
 onClickOutside(drawerRef, () => {
-  if (breakpoints.smaller('md').value) {
+  if (breakpoints.isGreater('md') && drawerOpen.value) {
     drawerOpen.value = false
   }
 })
@@ -324,7 +305,6 @@ const createNewNote = async () => {
     notes.value.unshift(newNote)
     selectedNote.value = notes.value[0]
     updatedNote.value = ''
-    // textarea.value.focus()
   } catch (err) {
     console.log(err)
   }
@@ -389,19 +369,17 @@ const earlierNotes = computed(() => {
 const getPreview: any = (html: string, maxLength: number = 50) => {
   if (!html) return ''
 
-  // Create a temporary DOM parser
   const div = document.createElement('div')
   div.innerHTML = html.trim()
 
-  // Get the first element node (like <p>, <h1>, etc.)
   const firstEl = div.firstElementChild
   if (!firstEl) return ''
 
-  // Extract only the text content
   const text = firstEl.textContent?.trim() || ''
 
-  // Truncate to maxLength and add ellipsis if needed
-  return text.length > maxLength ? text.slice(0, maxLength) + '…' : text
+  return text.length > maxLength
+    ? text.slice(0, maxLength) + '…'
+    : text
 }
 
 onMounted(async () => {
@@ -416,7 +394,5 @@ onMounted(async () => {
   }
 
   updatedNote.value = selectedNote.value.text
-
-  // textarea.value.focus()
 })
 </script>
