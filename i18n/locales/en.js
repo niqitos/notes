@@ -1,5 +1,7 @@
 export default {
-  app: 'Notes',
+  app: {
+    name: 'Notes'
+  },
   fields: {
     email: {
       label: 'Email',
@@ -22,11 +24,7 @@ export default {
     },
     submit: 'Sign Up',
     success: {
-      title: 'Success!',
       description: 'Account created successfully.'
-    },
-    error: {
-      title: 'Error!'
     }
   },
   login: {
@@ -38,12 +36,15 @@ export default {
     },
     submit: 'Log in',
     success: {
-      title: 'Success!',
       description: 'Logged in successfully.'
-    },
-    error: {
-      title: 'Error!'
     }
+  },
+  success: {
+    title: 'Success!'
+  },
+  error: {
+    title: 'Error!',
+    500: 'Something went wrong 😒'
   },
   today: 'Today',
   yesterday: 'Yesterday',

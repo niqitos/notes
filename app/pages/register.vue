@@ -75,13 +75,12 @@ type Schema = z.output<typeof schema>
 const loading = ref<boolean>(false)
 
 const submit = async (payload: FormSubmitEvent<Schema>) => {
+  loading.value = true
+
   try {
     await $fetch('/api/user', {
       method: 'POST',
-      body: {
-        email: payload.data.email,
-        password: payload.data.password
-      }
+      body: payload.data
     })
 
     toast.add({
@@ -92,11 +91,17 @@ const submit = async (payload: FormSubmitEvent<Schema>) => {
       duration: 3000
     })
 
+    loading.value = false
+
     navigateTo('/')
   } catch (error: any) {
+    loading.value = false
+
+    console.log(error.response?._data?.message)
+
     toast.add({
-      title: t('register.error.title'),
-      description: error.response?._data?.message,
+      title: t('error.title'),
+      description: t('error.500'),
       icon: 'i-lucide:circle-check',
       color: 'error',
       duration: 3000

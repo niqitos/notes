@@ -76,7 +76,6 @@ type Schema = z.output<typeof schema>
 const loading = ref<boolean>(false)
 
 const submit = async (payload: FormSubmitEvent<Schema>) => {
-  console.log(payload.data)
   loading.value = true
 
   try {
@@ -102,9 +101,11 @@ const submit = async (payload: FormSubmitEvent<Schema>) => {
   } catch (error: any) {
     loading.value = false
 
+    console.log(error.response?._data?.message)
+
     toast.add({
-      title: t('login.error.title'),
-      description: error.response?._data?.message,
+      title: t('error.title'),
+      description: t('error.500'),
       icon: 'i-lucide:circle-check',
       color: 'error',
       duration: 3000

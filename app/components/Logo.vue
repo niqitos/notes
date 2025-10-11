@@ -7,7 +7,7 @@
 
     <span
       class="pl-3"
-      v-text="$t('app')"
+      v-text="$t('app.name')"
     />
   </div>
 </template>
