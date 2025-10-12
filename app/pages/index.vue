@@ -261,7 +261,7 @@ const updatedNote = ref<any>('')
 const notes = ref<any>([])
 const selectedNote = ref<any>({})
 const drawerOpen = ref<boolean>(breakpoints.isGreater('md'))
-const drawerRef = useTemplateRef<HTMLElement>('drawerRef')
+// const drawerRef = useTemplateRef<HTMLElement>('drawerRef')
 const deleteModalOpen = ref<boolean>(false)
 const logoutModalOpen = ref<boolean>(false)
 
@@ -269,11 +269,12 @@ definePageMeta({
   middleware: ['auth']
 })
 
-onClickOutside(drawerRef, () => {
-  if (breakpoints.isGreater('md') && drawerOpen.value) {
-    drawerOpen.value = false
-  }
-})
+// onClickOutside(drawerRef, () => {
+//   console.log(breakpoints.smaller('md'))
+//   if (breakpoints.smaller('md') && drawerOpen.value) {
+//     drawerOpen.value = false
+//   }
+// })
 
 const setNote = (note: any) => {
   selectedNote.value = note
