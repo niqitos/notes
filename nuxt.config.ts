@@ -74,6 +74,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxtjs/i18n',
+    '@pinia/nuxt',
     '@vueuse/nuxt'
   ],
 
@@ -93,5 +94,9 @@ export default defineNuxtConfig({
         'lucide:trash'
       ]
     }
+  },
+
+  runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET
   }
 })

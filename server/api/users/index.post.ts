@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig()
+
   try {
     const body = await readBody(event)
 
@@ -29,22 +31,19 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const user = await prisma.user.findUnique({
-      where: {
+    const salt = await bcrypt.genSalt(10)
+    const passwordHash = await bcrypt.hash(body.password, salt)
+
+    // Sends to database
+    const user = await prisma.user.create({
+      data: {
         email: body.email,
+        password: passwordHash,
+        salt: salt,
       },
     })
 
-    const isValid = await bcrypt.compare(body.password, user.password)
-
-    if (!isValid) {
-      throw createError({
-        statusCode: 400,
-        message: 'Username or password is invalid.',
-      })
-    }
-
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET)
+    const token = jwt.sign({ id: user.id }, config.jwtSecret)
 
     setCookie(event, 'NotesJWT', token)
 

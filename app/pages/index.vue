@@ -206,6 +206,7 @@
             :content="updatedNote"
             :label="formatDateTime(selectedNote.updatedAt)"
             @change="($event: any) => {
+              if (selectedNote.text === $event) return
               debouncedFn($event)
               selectedNote.text = $event
             }"
@@ -255,12 +256,14 @@
 import { breakpointsTailwind } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
+const breakpoint = breakpoints.active()
+
 const { locale } = useI18n()
 
 const updatedNote = ref<any>('')
 const notes = ref<any>([])
 const selectedNote = ref<any>({})
-const drawerOpen = ref<boolean>(breakpoints.isGreater('md'))
+const drawerOpen = ref<boolean>(false)
 // const drawerRef = useTemplateRef<HTMLElement>('drawerRef')
 const deleteModalOpen = ref<boolean>(false)
 const logoutModalOpen = ref<boolean>(false)
@@ -386,15 +389,15 @@ const getPreview: any = (html: string, maxLength: number = 50) => {
 }
 
 onMounted(async () => {
-  notes.value = await $fetch('/api/notes')
-  notes.value.sort((a: any, b: any) => new Date(b.updatedAt) > new Date(a.updatedAt))
+  drawerOpen.value = ['md', 'lg', 'xl', '2xl'].includes(breakpoint.value)
 
-  if (notes.value.length > 0) {
-    selectedNote.value = notes.value[0]
-  } else {
+  notes.value = await $fetch('/api/notes')
+
+  if (notes.value.length === 0) {
     await createNewNote()
-    selectedNote.value = notes.value[0]
   }
+
+  selectedNote.value = notes.value[0]
 
   updatedNote.value = selectedNote.value.text
 })

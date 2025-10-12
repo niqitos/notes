@@ -1,9 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   const token = useCookie('NotesJWT')
-  const userStore = useUserStore()
 
   if (!token.value) {
-    return navigateTo('/login')
+    return
   }
 
   try {
@@ -14,20 +13,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
       }
     })
 
-    if (!verified.valid) {
-      token.value = null
-
-      return navigateTo('/login')
+    if (verified.valid) {
+      return navigateTo('/')
     }
-
-    const user = await $fetch('/api/auth/user')
-
-    userStore.user = user
-
-    return
   } catch (err) {
     token.value = null
 
-    return navigateTo('/login')
+    return
   }
+
+  return
 })

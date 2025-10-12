@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig()
+
   try {
     const cookies = parseCookies(event)
     const token = cookies.NotesJWT
@@ -13,12 +15,15 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const decodedToken = await jwt.verify(token, process.env.JWT_SECRET)
+    const decodedToken = await jwt.verify(token, config.jwtSecret)
 
     const notes = await prisma.note.findMany({
       where: {
-        userId: decodedToken.id,
+        userId: decodedToken.id
       },
+      orderBy: {
+        updatedAt: 'desc'
+      }
     })
 
     return notes

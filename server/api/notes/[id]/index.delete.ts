@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
+  const config = useRuntimeConfig()
+
   try {
     const id = await getRouterParam(event, 'id')
 
@@ -15,7 +17,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const decodedToken = await jwt.verify(token, process.env.JWT_SECRET)
+    const decodedToken = await jwt.verify(token, config.jwtSecret)
 
     const noteTryingToDelete = await prisma.note.findUnique({
       where: {

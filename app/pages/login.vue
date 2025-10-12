@@ -44,6 +44,10 @@
 import * as z from 'zod'
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
+definePageMeta({
+  middleware: ['guest']
+})
+
 const toast = useToast()
 const { t } = useI18n()
 
@@ -79,7 +83,7 @@ const submit = async (payload: FormSubmitEvent<Schema>) => {
   loading.value = true
 
   try {
-    await $fetch('/api/login', {
+    await $fetch('/api/auth/login', {
       method: 'POST',
       body: {
         email: payload.data.email,
