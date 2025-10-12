@@ -255,6 +255,7 @@
 import { breakpointsTailwind } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
+const { locale } = useI18n()
 
 const updatedNote = ref<any>('')
 const notes = ref<any>([])
@@ -329,14 +330,14 @@ const updateNote = async (text: any) => {
 }
 
 const formatTime = (date: string) => date
-  ? new Date(date).toLocaleTimeString([], {
+  ? new Date(date).toLocaleTimeString(locale.value, {
     hour: '2-digit',
     minute: '2-digit'
   })
   : ''
 
 const formatDateTime = (date: string) => date
-  ? new Date(date).toLocaleDateString([], {
+  ? new Date(date).toLocaleDateString(locale.value, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
